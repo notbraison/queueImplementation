@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/pqwebApp/webapp/styles.css">
+    <title>Queue Management System</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Queue Management System</h1>
+
+        <!-- Form to add items to the queue -->
+        <form id="queueForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="priority">Priority:</label>
+            <input type="number" id="priority" required>
+
+            <button type="button" onclick="addToQueue()">Add to Queue</button>
+        </form>
+
+        <!-- Queue table -->
+        <table id="queueTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="queueBody">
+                <!-- Queue items will be displayed here dynamically -->
+            </tbody>
+        </table>
+
+        <!-- Button to pop the first item from the queue -->
+        <button type="button" onclick="popFromQueue()">Pop from Queue</button>
+    </div>
+
+    <script src="/pqwebApp/webapp/script.js"></script>
+</body>
+</html>
