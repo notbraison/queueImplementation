@@ -1,56 +1,77 @@
-car_queue = []
+class PetrolStationQueue:
+    def __init__(self, num_pumps):
+        self.pumps = {i + 1: [] for i in range(num_pumps)}
 
-def enqueue_car(car):
-    car_queue.append(car)
-    print(f"The car queued is a {car}")
+    def enqueue(self, number_plate):
+        shortest_queue = min(self.pumps, key=lambda pump: len(self.pumps[pump]))
+        self.pumps[shortest_queue].append(number_plate)
+        print(f"{number_plate} joined the queue at pump {shortest_queue}.")
 
-def dequeue_car():
-    if len(car_queue) == 0:
-        print('The queue is empty!')
+    def dequeue(self, pump):
+        if not self.pumps[pump]:
+            print(f"Queue at Pump {pump} is empty.")
+            return None
+
+        car = self.pumps[pump].pop(0)
+        print(f"Pump {pump} is done fueling {car}.")
+        return car
+
+    def peek(self, pump):
+        if not self.pumps[pump]:
+            print(f"Queue at Pump {pump} is empty.")
+            return None
+
+        car = self.pumps[pump][0]
+        print(f"The first car at pump {pump} is {car}.")
+        return car
+
+    def is_empty(self, pump):
+        if pump not in self.pumps:
+            print(f"Pump {pump} does not exist.")
+            return None
+
+        return len(self.pumps[pump]) == 0
+
+    def display_queues(self):
+        for pump in self.pumps:
+            self.display_queue(pump)
+
+    def display_queue(self, pump):
+        if pump not in self.pumps:
+            print(f"Pump {pump} does not exist.")
+            return
+
+        if self.is_empty(pump):
+            print(f"Queue at Pump {pump} is empty.")
+        else:
+            print(f"Current Queue at Pump {pump}:", self.pumps[pump])
+
+
+num_pumps = 3
+petrol_station_queue = PetrolStationQueue(num_pumps)
+
+while True:
+    print("\nOptions:")
+    print("1. Enter car to be fueled")
+    print("2. See the queues")
+    print("3. Show the first car in each pump")
+    print("4. Dequeue the first car in each pump")
+    print("5. Exit")
+
+    choice = input("\nChoose an option: ")
+
+    if choice == '1':
+        number_plate = input("Enter the number plate: ")
+        petrol_station_queue.enqueue(number_plate)
+    elif choice == '2':
+        petrol_station_queue.display_queues()
+    elif choice == '3':
+        for pump_id in range(1, num_pumps + 1):
+            petrol_station_queue.peek(pump_id)
+    elif choice == '4':
+        for pump_id in range(1, num_pumps + 1):
+            petrol_station_queue.dequeue(pump_id)
+    elif choice == '5':
+        break
     else:
-        car_fueled = car_queue.pop(0)
-        print(f'The car that has been fueled is: {car_fueled}')
-
-def display():
-    print(*car_queue, sep = ", ")
-    
-def front_car():
-    front_car = car_queue[0]
-    print(f'The car at the front of the line is: {front_car}')
-    
-    
-option = None
-
-print("1: Enter car to be fueled: ", end = '')
-print("\n", end = '')
-print("2: Remove car that has been fueled", end = '')
-print("\n", end = '')
-print("3: The cars in line are ", end = '')
-print("\n", end = '')
-print("4: Display car at the front of the line", end = '')
-print("\n", end = '')
-print("5: Exit", end = '')
-print("\n", end = '')
-condition = True
-while condition:
-     
-    option = int(input("\nInput the number of activity:"))
-   
-    if option == 1:
-        car = input("Enter the type of to be fueled: ")
-        enqueue_car(car)  
-    elif option == 2:
-        dequeue_car()
-    elif option == 3:
-        print('\nThe cars in line to be fueled are: ')
-        display()
-    elif option == 4:
-        front_car()
-    elif option == 5:
-        print("Exit", end = '')
-        print("\n", end = '')
-    else:
-        print("Invalid choice", end = '')
-        print("\n", end = '')
-    condition = option!=5
-
+        print("Invalid option.")
