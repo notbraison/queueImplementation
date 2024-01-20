@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/pqwebApp/webapp/styles.css">
-    <title>Queue Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Bondo Polling Station</title>
 </head>
 <body>
     <div class="container">
-        <h1>Queue Management System</h1>
+        <h1>Bondo Polling Station</h1>
 
-        <!-- Form to add items to the queue -->
-        <form id="queueForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
+        <!-- Form to add customers to the queue -->
+        <form id="queueForm" method="POST" action="/">
+            <label for="name">Customer Name:</label>
+            <input type="text" id="name" name="name" required>
 
             <label for="priority">Priority:</label>
-            <input type="number" id="priority" required>
+            <input type="number" id="priority" name="priority" required>
 
-            <button type="button" onclick="addToQueue()">Add to Queue</button>
+            <button type="submit">Add to Queue</button>
         </form>
 
         <!-- Queue table -->
@@ -27,18 +27,28 @@
                 <tr>
                     <th>Name</th>
                     <th>Priority</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="queueBody">
                 <!-- Queue items will be displayed here dynamically -->
+                {% for customer in queue_content %}
+                    <tr>
+                        <td>{{ customer[0] }}</td>
+                        <td>{{ customer[1] }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 
-        <!-- Button to pop the first item from the queue -->
-        <button type="button" onclick="popFromQueue()">Pop from Queue</button>
+        <!-- Button to pop the first customer from the queue -->
+        <button type="button" onclick="popFromQueue()">Serve Customer</button>
+
+        <!-- Display served customer information -->
+        {% if served_customer %}
+            <p>Served Customer: {{ served_customer[0] }} (Priority: {{ served_customer[1] }})</p>
+        {% endif %}
     </div>
 
-    <script src="/pqwebApp/webapp/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
